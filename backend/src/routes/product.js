@@ -1,14 +1,24 @@
+const fs = require("fs");
 const express = require("express");
 const multer = require("multer");
-const sharp = require("sharp");
-const slugify = require("slugify");
-const User = require("../models/user");
+const path = require("path");
 const Product = require("../models/product");
 const auth = require("../middleware/auth");
 const router = new express.Router();
 
+// Storage Engine
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, "media/images/");
+  },
+  filename(req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+
 // Upload images function
 const upload = multer({
+  storage,
   limits: {
     fileSize: 1000000
   },
@@ -21,15 +31,19 @@ const upload = multer({
   }
 });
 
-// Define escapeRegex function for search feature
-function escapeRegex(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
-
 // Create product
-router.post("/products", auth, async (req, res) => {
+router.post("/products", auth, upload.array("images", 10), async (req, res) => {
+  if (!req.files) {
+    return res
+      .status(400)
+      .send({ error: "Please choose images before upload" });
+  }
+
+  const images = req.files.map(image => image.destination + image.filename);
+
   const product = new Product({
     ...req.body,
+    images,
     owner: req.user._id
   });
 
@@ -40,6 +54,11 @@ router.post("/products", auth, async (req, res) => {
     res.status(400).send(error);
   }
 });
+
+// Define escapeRegex function for search feature
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
 
 // Read products
 // GET /products?completed=true
@@ -96,41 +115,61 @@ router.get("/products/:slug", async (req, res) => {
 });
 
 // Update product
-router.patch("/products/:slug", auth, async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = [
-    "productCode",
-    "sku",
-    "name",
-    "description",
-    "costPrice",
-    "sellingPrice",
-    "category",
-    "color",
-    "size"
-  ];
-  const isValidOperation = updates.every(update =>
-    allowedUpdates.includes(update)
-  );
+router.patch(
+  "/products/:slug",
+  auth,
+  upload.array("images", 10),
+  async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = [
+      "productCode",
+      "sku",
+      "name",
+      "description",
+      "costPrice",
+      "sellingPrice",
+      "category",
+      "color",
+      "size"
+    ];
+    const isValidOperation = updates.every(update =>
+      allowedUpdates.includes(update)
+    );
 
-  if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates." });
-  }
-
-  try {
-    const product = await Product.findOne({ slug: req.params.slug });
-
-    if (!product) {
-      return res.status(404).send();
+    if (!isValidOperation) {
+      return res.status(400).send({ error: "Invalid updates." });
     }
 
-    updates.forEach(update => (product[update] = req.body[update]));
-    await product.save();
-    res.send(product);
-  } catch (error) {
-    res.status(400).send(error);
+    try {
+      const product = await Product.findOne({ slug: req.params.slug });
+
+      // Check if product doesn't exist
+      if (!product) {
+        // Delete image in that just uploaded if product doesn't exist
+        req.files.forEach(file => fs.unlinkSync(file.path));
+
+        // Return 404 status code (product not found)
+        return res.status(404).send();
+      }
+
+      // perform update when product exists.
+      updates.forEach(update => (product[update] = req.body[update]));
+
+      // Perform update images
+      const images = req.files.map(image => image.destination + image.filename);
+      product.images = product.images.concat(images);
+
+      // Save updated product to database
+      await product.save();
+
+      // Send 200 status code with updated product
+      res.send(product);
+    } catch (error) {
+      // Send 400 status code when error
+      res.status(400).send(error);
+    }
   }
-});
+);
 
 // Delete product
 router.delete("/products/:slug", auth, async (req, res) => {
@@ -152,14 +191,44 @@ router.post(
   auth,
   upload.array("images", 10),
   async (req, res) => {
-    const buffers = req.files.map(image => image.buffer);
+    if (!req.files) {
+      return res
+        .status(400)
+        .send({ error: "Please choose images before upload" });
+    }
+
+    const images = req.files.map(image => image.destination + image.filename);
+
     const product = await Product.findOne({ slug: req.params.slug });
-    product.images = product.images.concat(buffers);
+    product.images = product.images.concat(images);
     await product.save();
     res.send(product);
-    try {
-    } catch (error) {}
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
   }
 );
+
+// Delete specific image by image name
+router.delete("/products/:slug/images/:imageName", auth, async (req, res) => {
+  try {
+    const fullImageName = `media/images/${req.params.imageName}`;
+    const product = await Product.findOneAndUpdate(
+      { slug: req.params.slug },
+      {
+        $pull: { images: fullImageName }
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!product) {
+      return res.status(404).send();
+    }
+
+    res.send(product);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 
 module.exports = router;

@@ -54,7 +54,7 @@ const productSchema = mongoose.Schema(
       lowercase: true
     },
     images: {
-      type: [Buffer],
+      type: [String],
       validate(value) {
         if (value.length > 10) {
           throw new Error("Image exceeds the limit of 10");
@@ -73,15 +73,6 @@ const productSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-
-productSchema.methods.toJSON = function() {
-  const product = this;
-  const productObject = product.toObject();
-
-  delete productObject.images;
-
-  return productObject;
-};
 
 productSchema.pre("save", function(next) {
   const product = this;
