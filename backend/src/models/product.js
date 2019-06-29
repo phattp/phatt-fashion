@@ -53,6 +53,10 @@ const productSchema = mongoose.Schema(
       trim: true,
       lowercase: true
     },
+    inventory: {
+      type: Number,
+      default: 0
+    },
     images: {
       type: [String],
       validate(value) {

@@ -185,32 +185,8 @@ router.delete("/products/:slug", auth, async (req, res) => {
   }
 });
 
-// Upload product images
-router.post(
-  "/products/:slug/images",
-  auth,
-  upload.array("images", 10),
-  async (req, res) => {
-    if (!req.files) {
-      return res
-        .status(400)
-        .send({ error: "Please choose images before upload" });
-    }
-
-    const images = req.files.map(image => image.destination + image.filename);
-
-    const product = await Product.findOne({ slug: req.params.slug });
-    product.images = product.images.concat(images);
-    await product.save();
-    res.send(product);
-  },
-  (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
-  }
-);
-
 // Delete specific image by image name
-router.delete("/products/:slug/images/:imageName", auth, async (req, res) => {
+router.delete("/products/:slug/:imageName", auth, async (req, res) => {
   try {
     const fullImageName = `media/images/${req.params.imageName}`;
     const product = await Product.findOneAndUpdate(

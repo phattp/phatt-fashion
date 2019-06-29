@@ -1,0 +1,22 @@
+{
+  "name": "phatt-fashion",
+  "version": "1.0.0",
+  "description": "Ecommerce app for Phatt Fashion using Node.js",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run server\" \"cd frontend && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phattp/phatt-fashion.git"
+  },
+  "author": "Phatthara Pisootrapee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/phattp/phatt-fashion/issues"
+  },
+  "homepage": "https://github.com/phattp/phatt-fashion#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.1"
+  }
+}
