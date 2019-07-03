@@ -2,18 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import { ThemeProvider } from "styled-components";
+require("dotenv").config();
 
 const theme = {
   // COLOR VARIABLES
-  colorPrimary: "rgb(50, 51, 119)",
-  colorSecondary: "rgb(80, 86, 144)",
-  colorTertiary: "rgb(110, 121, 169)",
-  colorBlueDark: "#011638",
-  colorGreyDark: "#535c68",
-  colorGrey: "#b2bec3",
-  colorGreyLight: "#ecf0f1",
+  colorPrimary: "#d65a31",
+  colorLogo: "#333333",
+  colorGrey: "#393e46",
+  colorGreyLight: "#eeeeee",
   colorWhite: "#fff",
-  colorBlack: "#2d3436"
+  colorBlack: "#222831"
 };
 
 ReactDOM.render(

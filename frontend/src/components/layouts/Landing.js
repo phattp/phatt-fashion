@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Hero from "./Hero";
+import Recommended from "./Recommended";
 
 class Landing extends Component {
   componentDidMount() {
@@ -14,6 +15,7 @@ class Landing extends Component {
     return (
       <div>
         <Hero />
+        <Recommended />
       </div>
     );
   }

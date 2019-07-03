@@ -11,8 +11,8 @@ import {
 const Wrapper = styled.div`
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-color: ${props => props.theme.colorBlueDark};
-  color: ${props => props.theme.colorGrey};
+  background-color: ${props => props.theme.colorBlack};
+  color: ${props => props.theme.colorGreyLight};
   font-weight: 300;
   font-size: 0.9rem;
 `;
@@ -34,13 +34,13 @@ const StyledLink = styled.a`
   &:link {
     text-decoration: none;
     border: 0;
-    color: ${props => props.theme.colorGrey};
+    color: ${props => props.theme.colorGreyLight};
     -webkit-transition: color 0.2s;
     transition: color 0.2s;
   }
   &:hover,
   &:active {
-    color: ${props => props.theme.colorWhite};
+    color: ${props => props.theme.colorPrimary};
   }
 `;
 
@@ -50,13 +50,15 @@ const ContentUL = styled.ul`
   margin-top: 10px;
 `;
 
-const H3 = styled.h3`
-  color: ${props => props.theme.colorWhite};
+const H2 = styled.h2`
+  font-family: "Raph Lanok Future";
+  font-size: 2.8rem;
+  color: ${props => props.theme.colorGreyLight};
 `;
 
-const P = styled.p`
-  font-family: "Mitr";
-  letter-spacing: 0.8px;
+const H3 = styled.h3`
+  font-weight: 800;
+  color: ${props => props.theme.colorGreyLight};
 `;
 
 const Footer = () => {
@@ -65,8 +67,8 @@ const Footer = () => {
       <Container>
         <Row>
           <Col lg={6}>
-            <h2>Phatt</h2>
-            <P>Copyright &copy; 2019 by Phatt Fashion. All rights reserved.</P>
+            <H2>Phatt</H2>
+            <p>Copyright &copy; 2019 by Phatt Fashion. All rights reserved.</p>
             <SocialUL>
               <li>
                 <StyledLink href="/">
@@ -91,59 +93,53 @@ const Footer = () => {
             </SocialUL>
           </Col>
           <Col lg={2}>
-            <H3>อสังหาริมทรัพย์</H3>
+            <H3>Products</H3>
             <ContentUL>
               <li>
-                <StyledLink href="/">ทรัพย์ทั้งหมด</StyledLink>
+                <StyledLink href="/">All products</StyledLink>
               </li>
               <li>
-                <StyledLink href="/">ทองหล่อ</StyledLink>
+                <StyledLink href="/">Shirt</StyledLink>
               </li>
               <li>
-                <StyledLink href="/">เอกมัย</StyledLink>
+                <StyledLink href="/">Dress</StyledLink>
               </li>
               <li>
-                <StyledLink href="/">พร้อมพงษ์</StyledLink>
+                <StyledLink href="/">Pants</StyledLink>
               </li>
               <li>
-                <StyledLink href="/">ราชเทวี</StyledLink>
-              </li>
-              <li>
-                <StyledLink href="/">ห้วยขวาง</StyledLink>
-              </li>
-              <li>
-                <StyledLink href="/">อื่นๆ</StyledLink>
+                <StyledLink href="/">Accessories</StyledLink>
               </li>
             </ContentUL>
           </Col>
           <Col lg={2}>
-            <H3>บริษัท</H3>
+            <H3>Company</H3>
             <ContentUL>
               <li>
-                <StyledLink href="/">เกี่ยวกับเรา</StyledLink>
+                <StyledLink href="/">Our Story</StyledLink>
               </li>
               <li>
-                <StyledLink href="/">บทความ</StyledLink>
+                <StyledLink href="/">Blog</StyledLink>
               </li>
               <li>
                 <StyledLink href="/">Press</StyledLink>
               </li>
               <li>
-                <StyledLink href="/">ติดต่อเรา</StyledLink>
+                <StyledLink href="/">Contact Us</StyledLink>
               </li>
             </ContentUL>
           </Col>
           <Col lg={2}>
-            <H3>ช่วยเหลือ</H3>
+            <H3>Help</H3>
             <ContentUL>
               <li>
-                <StyledLink href="/">ติดต่อเรา</StyledLink>
+                <StyledLink href="/">Contact Us</StyledLink>
               </li>
               <li>
                 <StyledLink href="/">FAQ</StyledLink>
               </li>
               <li>
-                <StyledLink href="/">ข้อตกลง</StyledLink>
+                <StyledLink href="/">Term & Conditions</StyledLink>
               </li>
             </ContentUL>
           </Col>

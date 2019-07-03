@@ -14,23 +14,41 @@ import ProductDetail from "./products/ProductDetail";
 
 // Define Global Style
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Raph Lanok Future';
+    font-style: normal;
+    font-weight: normal;
+    src:
+      local('Raph Lanok Future'),
+      url('../fonts/RaphLanokFuture.otf') format('otf');
+  }
+
   body {
-    font-family: 'Kanit';
-    letter-spacing: .8px;
+    font-family: 'Muli';
+    font-size: 0.9rem;
     color: ${props => props.theme.colorBlack};
   }
+
   h3 {
     font-weight: 400;
     font-size: 1.2rem;
   }
+
   h4 {
     font-weight: 500;
     font-size: 1.1rem;
   }
+
   h5 {
     font-weight: 500;
     font-size: 1rem;
   }
+
+  h6 {
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+  
   p {
     font-weight: 300;
     font-size: .9rem;
