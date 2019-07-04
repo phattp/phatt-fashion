@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav, InputGroup, FormControl, Button } from "react-bootstrap";
 import styled from "styled-components";
@@ -56,32 +56,36 @@ const StyledNavbar = styled(Navbar)`
   font-size: 1rem;
 `;
 
-const Header = () => {
-  return (
-    <StyledNavbar collapseOnSelect expand="lg" sticky="top">
-      <BrandLink to="/">Phatt</BrandLink>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav>
-          <StyledLink to="/products">Shop Now</StyledLink>
-        </Nav>
-        <InputGroup style={{ width: "60%", margin: "0 auto" }}>
-          <FormControl
-            placeholder="Search for items"
-            aria-label="Search for items"
-            aria-describedby="navbar-search"
-          />
-          <InputGroup.Append>
-            <Button variant="outline-secondary">Button</Button>
-          </InputGroup.Append>
-        </InputGroup>
-        <Nav className="align-items-center">
-          <Ctl to="/signup">Sign Up</Ctl>
-          <StyledLink to="/login">Log In</StyledLink>
-        </Nav>
-      </Navbar.Collapse>
-    </StyledNavbar>
-  );
-};
+class Header extends Component {
+  render() {
+    return (
+      <StyledNavbar collapseOnSelect expand="lg" sticky="top">
+        <BrandLink to="/">Phatt</BrandLink>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav>
+            <StyledLink to="/products">Shop Now</StyledLink>
+          </Nav>
+          <InputGroup style={{ width: "60%", margin: "0 auto" }}>
+            <FormControl
+              placeholder="Search for items"
+              aria-label="Search for items"
+              aria-describedby="navbar-search"
+            />
+            <InputGroup.Append>
+              <Button onClick={this.onClick} variant="outline-secondary">
+                Button
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
+          <Nav className="align-items-center">
+            <Ctl to="/signup">Sign Up</Ctl>
+            <StyledLink to="/login">Log In</StyledLink>
+          </Nav>
+        </Navbar.Collapse>
+      </StyledNavbar>
+    );
+  }
+}
 
 export default Header;

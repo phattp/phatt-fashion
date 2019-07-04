@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
-
 import { Provider } from "react-redux";
 import store from "../store";
 
